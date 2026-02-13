@@ -1,5 +1,5 @@
 export class Validator {
-    private rules: Record<string, Function> = {};
+    private rules: Record<string, (value) => boolean> = {};
 
     isValid(value: unknown) {
         return Object.entries(this.rules).every(([key, rule]) => {
@@ -7,7 +7,7 @@ export class Validator {
                 return true;
             }
 
-            console.info("Rule failed: ", key);
+            console.info('Rule failed: ', key);
 
             return false;
         });
@@ -19,7 +19,7 @@ export class Validator {
                 return true;
             }
 
-            return typeof value === 'string'
+            return typeof value === 'string';
         };
 
         return this;
