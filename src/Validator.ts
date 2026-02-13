@@ -1,6 +1,10 @@
 export class Validator {
     private rules: Record<string, (value) => boolean> = {};
 
+    static isUndefinedOrNull(value: unknown) {
+        return typeof value === 'undefined' || value === null;
+    }
+
     isValid(value: unknown) {
         return Object.entries(this.rules).every(([key, rule]) => {
             if (rule(value)) {
@@ -15,12 +19,36 @@ export class Validator {
 
     string() {
         this.rules.string = (value) => {
-            if (typeof value === 'undefined' || value === null) {
+            if (Validator.isUndefinedOrNull(value)) {
                 return true;
             }
 
             return typeof value === 'string';
         };
+
+        return this;
+    }
+
+    number() {
+        this.rules.number = (value) => {
+            if (Validator.isUndefinedOrNull(value)) {
+                return true;
+            }
+
+            return typeof value === 'number';
+        };
+
+        return this;
+    }
+
+    range(min: number, max: number) {
+        this.rules.range = (value) => value >= min && value <= max;
+
+        return this;
+    }
+
+    positive() {
+        this.rules.positive = (value) => Number(value) > 0;
 
         return this;
     }
