@@ -78,4 +78,30 @@ describe('validator', () => {
             expect(schema.isValid(5)).toBe(true);
         });
     });
+
+    describe('step 3', () => {
+        test('array schema without required accepts null', () => {
+            const v = new Validator();
+            const schema = v.array();
+
+            expect(schema.isValid(null)).toBe(true);
+        });
+
+        test('array schema with required rejects null and accepts arrays', () => {
+            const v = new Validator();
+            const schema = v.array().required();
+
+            expect(schema.isValid(null)).toBe(false);
+            expect(schema.isValid([])).toBe(true);
+            expect(schema.isValid(['hexlet'])).toBe(true);
+        });
+
+        test('sizeof checks array length', () => {
+            const v = new Validator();
+            const schema = v.array().required().sizeof(2);
+
+            expect(schema.isValid(['hexlet'])).toBe(false);
+            expect(schema.isValid(['hexlet', 'code-basics'])).toBe(true);
+        });
+    });
 });

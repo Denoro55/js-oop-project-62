@@ -1,8 +1,12 @@
 export class Validator {
     private rules: Record<string, (value) => boolean> = {};
 
-    static isUndefinedOrNull(value: unknown) {
-        return typeof value === 'undefined' || value === null;
+    static withUndefinedOrNullCheck(value: unknown, fn: (value: unknown) => boolean) {
+        if (typeof value === 'undefined' || value === null) {
+            return true;
+        }
+
+        return fn(value);
     }
 
     isValid(value: unknown) {
@@ -19,11 +23,7 @@ export class Validator {
 
     string() {
         this.rules.string = (value) => {
-            if (Validator.isUndefinedOrNull(value)) {
-                return true;
-            }
-
-            return typeof value === 'string';
+            return Validator.withUndefinedOrNullCheck(value, (value) => typeof value === 'string');
         };
 
         return this;
@@ -31,11 +31,7 @@ export class Validator {
 
     number() {
         this.rules.number = (value) => {
-            if (Validator.isUndefinedOrNull(value)) {
-                return true;
-            }
-
-            return typeof value === 'number';
+            return Validator.withUndefinedOrNullCheck(value, (value) => typeof value === 'number');
         };
 
         return this;
@@ -67,6 +63,20 @@ export class Validator {
 
     minLength(minValue: number) {
         this.rules.minLength = (value) => value.length >= minValue;
+
+        return this;
+    }
+
+    array() {
+        this.rules.array = (value) => {
+            return Validator.withUndefinedOrNullCheck(value, (value) => Array.isArray(value));
+        };
+
+        return this;
+    }
+
+    sizeof(size: number) {
+        this.rules.sizeof = (value) => value.length === size;
 
         return this;
     }
