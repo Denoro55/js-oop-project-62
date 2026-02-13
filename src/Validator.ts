@@ -1,5 +1,11 @@
+type RuleFn = (value) => boolean;
+
 export class Validator {
-    private rules: Record<string, (value) => boolean> = {};
+    private rules: Record<string, RuleFn>;
+
+    constructor(rules: Record<string, RuleFn> = {}) {
+        this.rules = rules;
+    }
 
     static withUndefinedOrNullCheck(value: unknown, fn: (value: unknown) => boolean) {
         if (typeof value === 'undefined' || value === null) {
@@ -22,19 +28,19 @@ export class Validator {
     }
 
     string() {
-        this.rules.string = (value) => {
+        const ruleString = (value) => {
             return Validator.withUndefinedOrNullCheck(value, (value) => typeof value === 'string');
         };
 
-        return this;
+        return new Validator({ string: ruleString });
     }
 
     number() {
-        this.rules.number = (value) => {
+        const ruleNumber = (value) => {
             return Validator.withUndefinedOrNullCheck(value, (value) => typeof value === 'number');
         };
 
-        return this;
+        return new Validator({ number: ruleNumber });
     }
 
     range(min: number, max: number) {
@@ -44,7 +50,9 @@ export class Validator {
     }
 
     positive() {
-        this.rules.positive = (value) => Number(value) > 0;
+        this.rules.positive = (value) => {
+            return Validator.withUndefinedOrNullCheck(value, (value) => Number(value) > 0);
+        };
 
         return this;
     }
@@ -77,6 +85,22 @@ export class Validator {
 
     sizeof(size: number) {
         this.rules.sizeof = (value) => value.length === size;
+
+        return this;
+    }
+
+    object() {
+        this.rules.object = (value) => typeof value === 'object' && !Array.isArray(value) && value !== null;
+
+        return this;
+    }
+
+    shape(schema: Record<string, Validator>) {
+        this.rules.shape = (obj) => {
+            return Object.entries(obj).every(([key, value]) => {
+                return schema[key].isValid(value);
+            });
+        };
 
         return this;
     }
