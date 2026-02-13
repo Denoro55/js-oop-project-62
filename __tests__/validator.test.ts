@@ -1,6 +1,6 @@
-import { Validator } from '../../src/Validator';
+import Validator from '../index';
 
-describe('Validator', () => {
+describe('validator', () => {
     test('string schema without required accepts empty values', () => {
         const v = new Validator();
         const schema = v.string();
