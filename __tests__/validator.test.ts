@@ -113,7 +113,7 @@ describe('validator', () => {
       // Позволяет описывать валидацию для свойств объекта
       schema.shape({
         name: v.string().required(),
-        age: v.number().positive(),
+        age: v.number().positive()
       });
 
       expect(schema.isValid({ name: 'kolya', age: 100 })).toBe(true);
