@@ -9,5 +9,5 @@ export default {
   coverageReporters: ['json', 'lcov', 'text', 'clover'],
 
   // Какие файлы включать в покрытие
-  collectCoverageFrom: ['src/**/*.ts'],
+  collectCoverageFrom: ['src/**/*.ts']
 };

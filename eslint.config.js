@@ -9,7 +9,7 @@ export default [
   {
     files: ['**/*.{js,ts}'],
     rules: {
-      '@typescript-eslint/no-explicit-any': 'off',
-    },
-  },
+      '@typescript-eslint/no-explicit-any': 'off'
+    }
+  }
 ];
