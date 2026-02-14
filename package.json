@@ -5,7 +5,8 @@
     "type": "module",
     "main": "index.js",
     "scripts": {
-        "test": "jest"
+        "test": "jest",
+        "lint": "eslint . --fix"
     },
     "keywords": [],
     "author": "",

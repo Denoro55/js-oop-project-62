@@ -5,29 +5,29 @@ import { StringSchema } from './StringSchema';
 import { CustomValidatorFn, TypeSchema } from './types';
 
 export class Validator {
-    private customValidators: Partial<Record<TypeSchema, Record<string, CustomValidatorFn>>> = {};
+  private customValidators: Partial<Record<TypeSchema, Record<string, CustomValidatorFn>>> = {};
 
-    addValidator(type: TypeSchema, name: string, fn: CustomValidatorFn) {
-        if (!this.customValidators[type]) {
-            this.customValidators[type] = {};
-        }
-
-        this.customValidators[type][name] = fn;
+  addValidator(type: TypeSchema, name: string, fn: CustomValidatorFn) {
+    if (!this.customValidators[type]) {
+      this.customValidators[type] = {};
     }
 
-    string() {
-        return new StringSchema(this.customValidators['string']);
-    }
+    this.customValidators[type][name] = fn;
+  }
 
-    number() {
-        return new NumberSchema(this.customValidators['number']);
-    }
+  string() {
+    return new StringSchema(this.customValidators['string']);
+  }
 
-    array() {
-        return new ArraySchema(this.customValidators['array']);
-    }
+  number() {
+    return new NumberSchema(this.customValidators['number']);
+  }
 
-    object() {
-        return new ObjectSchema(this.customValidators['object']);
-    }
+  array() {
+    return new ArraySchema(this.customValidators['array']);
+  }
+
+  object() {
+    return new ObjectSchema(this.customValidators['object']);
+  }
 }
