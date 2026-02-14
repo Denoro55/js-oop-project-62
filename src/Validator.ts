@@ -2,12 +2,12 @@ import { ArraySchema } from './ArraySchema';
 import { NumberSchema } from './NumberSchema';
 import { ObjectSchema } from './ObjectSchema';
 import { StringSchema } from './StringSchema';
-import { CustomValidatorFn } from './types';
+import { CustomValidatorFn, TypeSchema } from './types';
 
 export class Validator {
-    private customValidators: Record<string, Record<string, CustomValidatorFn>> = {};
+    private customValidators: Partial<Record<TypeSchema, Record<string, CustomValidatorFn>>> = {};
 
-    addValidator(type: string, name: string, fn: CustomValidatorFn) {
+    addValidator(type: TypeSchema, name: string, fn: CustomValidatorFn) {
         if (!this.customValidators[type]) {
             this.customValidators[type] = {};
         }

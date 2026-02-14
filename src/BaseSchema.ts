@@ -25,14 +25,8 @@ export class BaseSchema {
             return true;
         }
 
-        return Object.entries(this.checks).every(([key, rule]) => {
-            if (rule(value)) {
-                return true;
-            }
-
-            console.info('Rule failed: ', key);
-
-            return false;
+        return Object.values(this.checks).every((rule) => {
+            return rule(value);
         });
     }
 }
