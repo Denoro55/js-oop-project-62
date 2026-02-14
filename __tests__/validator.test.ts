@@ -124,6 +124,29 @@ describe('validator', () => {
     });
 
     describe('step 5', () => {
-        //
+        test('custom string validator with addValidator and test', () => {
+            const v = new Validator();
+
+            const fn = (value: string, start: string) => value.startsWith(start);
+            // Метод добавления новых валидаторов
+            // addValidator(type, name, fn)
+            v.addValidator('string', 'startWith', fn);
+
+            // Новые валидаторы вызываются через метод test
+            const schema = v.string().test('startWith', 'H');
+            expect(schema.isValid('exlet')).toBe(false);
+            expect(schema.isValid('Hexlet')).toBe(true);
+        });
+
+        test('custom number validator with addValidator and test', () => {
+            const v = new Validator();
+
+            const fn = (value: number, min: number) => value >= min;
+            v.addValidator('number', 'min', fn);
+
+            const schema = v.number().test('min', 5);
+            expect(schema.isValid(4)).toBe(false);
+            expect(schema.isValid(6)).toBe(true);
+        });
     });
 });
